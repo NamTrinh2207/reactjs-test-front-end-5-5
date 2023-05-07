@@ -17,13 +17,11 @@ const Navbar = () => {
                     </NavLink>
 
                     <div>
-
                         <Link to={"/carts"}>
                             <button className="navbar-toggler" type="button">
                                 <i className="fa fa-shopping-cart"></i>
                             </button>
                         </Link>
-
                         <Link to={"/users"}>
                             <button className="navbar-toggler" type="button">
                                 <i className="fa fa-user-circle"></i>
