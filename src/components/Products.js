@@ -32,7 +32,6 @@ function Products() {
         const getCategory = async () => {
             axios.get('http://localhost:8080/api/category').then(res => {
                 setCategory(res.data)
-                console.log(res.data)
             }).catch((err) => {
                 console.error(err)
             })
@@ -48,7 +47,7 @@ function Products() {
                         <button className="btn btn-outline-dark m-1 btn-sm" onClick={() => setFilter(data)}>All</button>
                         {category.map((category) => {
                             return (
-                                <button className="btn btn-outline-dark m-1 btn-sm" onClick={() => filterProduct(category.id)}>{category.categoryName}</button>
+                                <button key={category.id} className="btn btn-outline-dark m-1 btn-sm" onClick={() => filterProduct(category.id)}>{category.categoryName}</button>
                             )
                         })
                         }
@@ -102,7 +101,8 @@ function Products() {
                         <button className="btn btn-outline-dark m-1 btn-sm" onClick={() => setFilter(data)}>All</button>
                         {category.map((category) => {
                             return (
-                                <button key={category.id} className="btn btn-outline-dark m-1 btn-sm" onClick={() => filterProduct(category.id)}>{category.categoryName}</button>
+                                <button key={category.id} className="btn btn-outline-dark m-1 btn-sm" onClick={ ()=>
+                                    filterProduct(category.id)}>{category.categoryName}</button>
                             )
                         })
                         }
