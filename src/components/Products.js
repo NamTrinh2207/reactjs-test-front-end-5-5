@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react'
+import React, {useState, useEffect} from 'react'
 import Skeleton from 'react-loading-skeleton';
-import { NavLink } from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
+import axios from "axios";
 
 function Products() {
 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [filter, setFilter] = useState(data);
+    const [category, setCategory] = useState([]);
 
     useEffect(() => {
         let componentMounted = true;
         const getProdcuts = async () => {
             setLoading(true);
-            const response = await fetch('https://fakestoreapi.com/products');
+            const response = await fetch(' http://localhost:8080/products/');
             if (componentMounted) {
                 const data = await response.json();
                 setData(data);
@@ -26,17 +28,30 @@ function Products() {
         getProdcuts();
     }, []);
 
+    useEffect(() => {
+        const getCategory = async () => {
+            axios.get('http://localhost:8080/api/category').then(res => {
+                setCategory(res.data)
+                console.log(res.data)
+            }).catch((err) => {
+                console.error(err)
+            })
+        }
+        getCategory();
+    }, []);
     const Loading = () => {
         return (
             <>
                 <div className="col-md-3 my-3">
 
-                    <div className="position-sticky" style={{ top: "100px" }}>
+                    <div className="position-sticky" style={{top: "100px"}}>
                         <button className="btn btn-outline-dark m-1 btn-sm" onClick={() => setFilter(data)}>All</button>
-                        <button className="btn btn-outline-dark m-1 btn-sm" onClick={() => filterProduct("women's clothing")}>Women's Clothing</button>
-                        <button className="btn btn-outline-dark m-1 btn-sm" onClick={() => filterProduct("men's clothing")}>Men's Clothing</button>
-                        <button className="btn btn-outline-dark m-1 btn-sm" onClick={() => filterProduct("jewelery")}>Jewelery</button>
-                        <button className="btn btn-outline-dark m-1 btn-sm" onClick={() => filterProduct("electronics")}>Electronics</button>
+                        {category.map((category) => {
+                            return (
+                                <button className="btn btn-outline-dark m-1 btn-sm" onClick={() => filterProduct(category.id)}>{category.categoryName}</button>
+                            )
+                        })
+                        }
                     </div>
 
                 </div>
@@ -63,7 +78,7 @@ function Products() {
                         </div>
                         <div className="col-6 col-md-6 col-lg-4 mb-3">
                             <Skeleton height={400} width={"100%"}/>
-                        </div>  
+                        </div>
                     </div>
 
                 </div>
@@ -74,7 +89,7 @@ function Products() {
     }
 
     const filterProduct = (category) => {
-        const updateList = data.filter((x) => x.category === category);
+        const updateList = data.filter((x) => x.categoryId === category);
         setFilter(updateList);
     }
 
@@ -83,12 +98,14 @@ function Products() {
             <>
                 <div className="col-md-3 my-3">
 
-                    <div className="position-sticky" style={{ top: "100px" }}>
+                    <div className="position-sticky" style={{top: "100px"}}>
                         <button className="btn btn-outline-dark m-1 btn-sm" onClick={() => setFilter(data)}>All</button>
-                        <button className="btn btn-outline-dark m-1 btn-sm" onClick={() => filterProduct("women's clothing")}>Women's Clothing</button>
-                        <button className="btn btn-outline-dark m-1 btn-sm" onClick={() => filterProduct("men's clothing")}>Men's Clothing</button>
-                        <button className="btn btn-outline-dark m-1 btn-sm" onClick={() => filterProduct("jewelery")}>Jewelery</button>
-                        <button className="btn btn-outline-dark m-1 btn-sm" onClick={() => filterProduct("electronics")}>Electronics</button>
+                        {category.map((category) => {
+                            return (
+                                <button key={category.id} className="btn btn-outline-dark m-1 btn-sm" onClick={() => filterProduct(category.id)}>{category.categoryName}</button>
+                            )
+                        })
+                        }
                     </div>
 
                 </div>
@@ -100,11 +117,13 @@ function Products() {
                                 <div className="col-6 col-md-6 col-lg-4 mb-3" key={product.id}>
 
                                     <div className="card h-100">
-                                        <img src={product.image} className="m-3" style={{ height: "300px", width: "auto", objectFit: "contain" }} alt={product.title} />
+                                        <img src={product.picture} className="m-3"
+                                             style={{height: "300px", width: "auto", objectFit: "contain"}}
+                                             alt={product.name}/>
                                         <div className="m-3 mb-0">
-                                            <small className="card-title">{product.title.substring(0, 50)}...</small>
+                                            <small className="card-title">{product.name}...</small>
                                         </div>
-                                        <div style={{ marginTop: "auto" }}>
+                                        <div style={{marginTop: "auto"}}>
                                             <div className="d-flex justify-content-between align-items-center">
                                                 <div className="m-3"><b>${product.price}</b></div>
                                                 <NavLink className="stretched-link" to={`/product/${product.id}`}>
@@ -130,7 +149,7 @@ function Products() {
     return (
         <div className="container">
             <div className="row">
-                {loading ? <Loading /> : <ShowProducts />}
+                {loading ? <Loading/> : <ShowProducts/>}
             </div>
         </div>
     )

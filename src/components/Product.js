@@ -12,7 +12,7 @@ function Product() {
     useEffect(() => {
         const getProduct = async () => {
             setLoading(true);
-            const response = await fetch(`https://fakestoreapi.com/products/${id}`);
+            const response = await fetch(` http://localhost:8080/products/${id}`);
             const data = await response.json();
             setProduct(data);
             setLoading(false);
@@ -89,7 +89,7 @@ function Product() {
                                 <div className="col-md-6">
                                     <div className="images p-3">
                                         <div className="text-center p-4">
-                                            <img id="main-image" alt="product" src={product.image} width="250" />
+                                            <img id="main-image" alt="product" src={product.picture} width="250" />
                                         </div>
                                     </div>
                                 </div>
@@ -100,7 +100,7 @@ function Product() {
                                         <span className="text-muted text-capitalize"> in {product.category}</span>
 
                                             <h5 className="text-uppercase">
-                                                {product.title}
+                                                {product.name}
                                             </h5>
 
                                             Rating {product.rating && product.rating.rate}
