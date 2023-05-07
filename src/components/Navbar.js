@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 
 const Navbar = () => {
     return (
@@ -11,12 +11,19 @@ const Navbar = () => {
                     <button className="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
                         <i className="fa fa-bars"></i>
                     </button>
-                    <NavLink to="/">
+                    <NavLink to="/login">
                         <img src="/FakeShop.png" alt="logo" style={{ height: "50px" }} />
                     </NavLink>
-                    <button className="navbar-toggler" type="button">
-                        <i className="fa fa-shopping-cart"></i>
-                    </button>
+                    <div>
+                        <button className="navbar-toggler" type="button">
+                            <i className="fa fa-shopping-cart"></i>
+                        </button>
+                        <Link to="/signup">
+                            <button className="navbar-toggler" type="button">
+                                <i className="fa fa-user-circle"></i>
+                            </button>
+                        </Link>
+                    </div>
                     <div className="offcanvas offcanvas-start" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                         <div className="offcanvas-header">
                             <NavLink to="/">
@@ -30,8 +37,6 @@ const Navbar = () => {
                     </div>
                 </div>
             </nav>
-
-
         </div>
     )
 }
